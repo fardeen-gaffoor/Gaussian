@@ -8,22 +8,67 @@ To write a program to find the solution of a matrix using Gaussian Elimination.
 2. Anaconda – Python 3.7 Installation / Moodle-Code Runner
 
 ## Algorithm
-1. 
-2. 
-3. 
-4. 
+# Algorithm
+
+1. Start the program.
+2. Read the number of equations ( n ).
+3. Read the coefficients of the augmented matrix ([A|B]).
+4. Apply forward elimination process:
+
+   * For each pivot row ( i ):
+
+     * Check whether the pivot element is zero.
+     * If the pivot element is non-zero, eliminate the elements below the pivot using:
+       [
+       R_j = R_j - \left(\frac{a[j][i]}{a[i][i]}\right) R_i
+       ]
+       where ( j > i ).
+5. After converting the matrix into upper triangular form, apply back substitution:
+
+   * Find the last variable first.
+   * Substitute the obtained values into previous equations to find remaining variables.
+6. Store the solutions in an array.
+7. Display the solution of the variables.
+8. Stop the program.
+
 
 ## Program:
 ```
-/*
-Program to find the solution of a matrix using Gaussian Elimination.
-Developed by: 
-RegisterNumber: 
-*/
+'''Program to solve a matrix using Gaussian elimination without partial pivoting.
+Developed by: Fardeen Gaffoor S
+RegisterNumber: 212225230068
+'''
+import os
+os.environ['OPENBLAS_NUM_THREADS'] = '1'
+os.environ['OMP_NUM_THREADS'] = '1'
+os.environ['MKL_NUM_THREADS'] = '1'
+import numpy as np
+import sys
+n=int(input())
+a=np.zeros((n,n+1))
+x=np.zeros(n)
+for i in range(n):
+    for j in range(n+1):
+        a[i][j]=float(input())
+for i in range(n):
+    if a[i][i]==0.0:
+        sys.exit('Divide by zero detected!')
+    for j in range(i+1,n):
+        ratio=a[j][i]/a[i][i]
+        for k in range(n+1):
+            a[j][k]=a[j][k]-ratio*a[i][k]
+x[n-1]=a[n-1][n]/a[n-1][n-1]
+for i in range(n-2,-1,-1):
+    x[i]=a[i][n]
+    for j in range(i+1,n):
+        x[i]=x[i]-a[i][j]*x[j]
+    x[i]=x[i]/a[i][i]
+for i in range(n):
+    print('X%d = %0.2f '%(i,x[i]),end='')
 ```
 
 ## Output:
-![gaussian elimination]()
+![alt text](image.png)
 
 
 ## Result:
